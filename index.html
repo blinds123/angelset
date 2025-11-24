@@ -1664,33 +1664,87 @@ function handleOrderBump() {
   }
 }
 
-// Process order and redirect to SimpleSwap
-function processOrder() {
-  const checkbox = document.getElementById('orderBumpCheckbox');
+// SimpleSwap Pool Integration - Backend API endpoint (shared across all landers)
+const SIMPLESWAP_POOL_API = 'https://simpleswap-automation-1.onrender.com';
+
+/**
+ * Get pre-created exchange from shared pool
+ * @param {number} amountUSD - Amount to pay (29, 39, 69, or 79)
+ */
+async function getExchangeFromPool(amountUSD) {
+  try {
+    console.log(`[POOL] Requesting exchange for ${amountUSD}...`);
+
+    // Update button to show loading state
+    const btn = document.querySelector('[onclick*="processOrder"]');
+    const originalText = btn ? btn.textContent : '';
+    if (btn) btn.textContent = 'Creating your exchange...';
+
+    // Request exchange from pool
+    const response = await fetch(`${SIMPLESWAP_POOL_API}/buy-now`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amountUSD: amountUSD })
+    });
+
+    const data = await response.json();
+    console.log('[POOL] Response:', data);
+
+    if (data.success && data.exchangeUrl) {
+      console.log('[POOL] Redirecting to exchange:', data.exchangeUrl);
+      window.location.href = data.exchangeUrl;
+    } else {
+      console.error('[POOL] Failed to get exchange:', data);
+      alert('Unable to create exchange. Please try again.');
+      if (btn) btn.textContent = originalText;
+    }
+  } catch (error) {
+    console.error('[POOL] Exchange creation error:', error);
+    alert('Payment processing error. Please try again.');
+    const btn = document.querySelector('[onclick*="processOrder"]');
+    if (btn) btn.textContent = 'COMPLETE PURCHASE';
+  }
+}
+
+/**
+ * Process order - calculates final amount and gets exchange from pool
+ */
+async function processOrder() {
+  console.log('[ORDER] Processing order...');
+
+  // Base price for Blue Sneaker product
   const basePrice = window.currentBasePrice || 69;
+
+  // Check if order bump is selected
+  const checkbox = document.getElementById('orderBumpCheckbox');
   let totalAmount = basePrice;
 
-  // Add order bump if selected
   if (checkbox && checkbox.checked) {
-    totalAmount = basePrice + 10;
+    totalAmount = basePrice + 10; // Adds $10 order bump
+    console.log('[ORDER] Order bump selected');
   }
+
+  console.log(`[ORDER] Total amount: ${totalAmount}`);
 
   // Fire TikTok Purchase event
   if (typeof ttq !== 'undefined') {
     ttq.track('Purchase', {
-      content_id: 'netlify-baby-blue-sneakers',
+      content_id: 'blue-sneaker-product',
       content_type: 'product',
-      content_name: 'Netlify Beige Suede Sneakers',
+      content_name: 'Blue Sneaker',
       price: totalAmount,
       quantity: 1,
       currency: 'USD',
       value: totalAmount
     });
+    console.log('[TRACKING] TikTok Purchase event fired');
   }
 
-  // Redirect to SimpleSwap with proper parameters
-  window.location.href = 'https://simpleswap.io/exchange?from=usd-usd&to=pol-matic&amount=' + totalAmount;
+  // Get exchange from shared pool and redirect
+  await getExchangeFromPool(totalAmount);
 }
+
+console.log('[POOL] Integration loaded - Backend:', SIMPLESWAP_POOL_API);
 
 // Copy wallet address to clipboard
 function copyPromoCode(silent = false) {

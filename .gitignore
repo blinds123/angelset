@@ -1,20 +1,8 @@
-# Don't ignore images
-!images/
-!images/**/*.webp
-!images/**/*.png
-!images/**/*.jpg
-!images/**/*.jpeg
-
-# OS files
 .DS_Store
-Thumbs.db
-
-# Test results
-test-results/
-test-results-*/
-verification-results/
-.playwright-mcp/
-
-# Node
 node_modules/
-npm-debug.log
+.netlify/
+*.log
+.env
+.env.local
+.playwright-mcp/
+package-lock.json
