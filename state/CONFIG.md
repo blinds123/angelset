@@ -16,11 +16,11 @@ ACCENT_COLOR: #28a745
 TIKTOK_PIXEL_ID: D3CVHNBC77U2RE92M7O0
 ```
 
-## Deployment - NEW INFRASTRUCTURE
+## Deployment - NEW INFRASTRUCTURE (ANGELSET)
 ```
-SITE_NAME: hesaidshesaid-pants
-NETLIFY_URL: https://hesaidshesaid-pants.netlify.app
-GITHUB_REPO: https://github.com/blinds123/hesaidshesaid-pants-olive
+SITE_NAME: angelset-lander
+NETLIFY_URL: https://angelset-lander.netlify.app
+GITHUB_REPO: https://github.com/blinds123/angelset
 ```
 
 ## Pool Configuration
@@ -39,5 +39,5 @@ IMAGES_FOLDER: /Users/nelsonchan/Downloads/secretjeans TEMPLATE SMALL copy/image
 ```
 TIMESTAMP: 2025-11-29
 STATUS: CONFIG_COMPLETE
-INFRASTRUCTURE: NEW (separated from seamlessblazer)
+INFRASTRUCTURE: NEW (angelset - completely separate)
 ```

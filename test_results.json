@@ -1,0 +1,23 @@
+{
+  "site_url": "https://angelset-lander.netlify.app",
+  "test_59_flow": {
+    "passed": true,
+    "redirect_url": "https://simpleswap.io/exchange?id=tqruks8gswx37cps"
+  },
+  "test_19_flow": {
+    "passed": true,
+    "redirect_url": "https://simpleswap.io/exchange?id=agjd0rh5cerlm3pq"
+  },
+  "horizontal_scroll": {
+    "viewport": 375,
+    "scroll_width": 375,
+    "passed": true
+  },
+  "above_fold": {
+    "price_visible": true,
+    "cta_visible": true,
+    "passed": true
+  },
+  "overall_score": "10/10",
+  "issues": []
+}
